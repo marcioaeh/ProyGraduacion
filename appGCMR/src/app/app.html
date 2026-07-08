@@ -1,0 +1,25 @@
+@if (!isLoggedIn()) {
+  <div class="auth-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+} @else {
+  <div class="dashboard-layout">
+    
+    <aside class="sidebar-aside">
+      <app-sidebar></app-sidebar>
+    </aside>
+
+    <div class="main-viewport">
+      <header class="header-navbar">
+        <app-navbar></app-navbar>
+      </header>
+
+      <main class="content-container">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+
+  </div>
+}
+
+<router-outlet></router-outlet>

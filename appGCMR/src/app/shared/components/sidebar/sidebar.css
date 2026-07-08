@@ -1,0 +1,90 @@
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: #9ca3af;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 12px;
+  background-color: #0f172a;
+}
+
+.logo-icon {
+  font-size: 32px;
+  color: #3b82f6; /* Azul brillante */
+}
+
+.sidebar-logo h2 {
+  color: #ffffff;
+  font-size: 18px;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.sidebar-logo p {
+  font-size: 12px;
+  margin: 0;
+  color: #6b7280;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background: #1f2937;
+  margin: 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 12px;
+  gap: 8px;
+  flex-grow: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  color: #9ca3af;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-item:hover {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+.nav-item.active-link {
+  background-color: #2563eb; /* Azul corporativo activo */
+  color: #ffffff;
+}
+
+.nav-item.active-link .material-symbols-outlined {
+  color: #ffffff;
+}
+
+.material-symbols-outlined {
+  font-size: 22px;
+  transition: color 0.2s;
+}
+
+.sidebar-footer {
+  padding: 16px;
+  background-color: #0f172a;
+}
+
+.admin-btn {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+}

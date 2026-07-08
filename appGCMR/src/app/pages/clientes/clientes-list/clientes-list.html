@@ -1,0 +1,89 @@
+<div class="page-header">
+  <div class="header-text">
+    <h2>Gestión de Clientes</h2>
+    <p>Monitoreo de carteras de clientes institucionales, métricas de pago y funcionarios autorizados.</p>
+  </div>
+  <button class="btn btn-primary" routerLink="/clientes/nuevo">
+    <span class="material-symbols-outlined">add</span>
+    Nuevo Cliente
+  </button>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <span class="material-symbols-outlined icon-blue">domain</span>
+    <div class="kpi-info">
+      <h3>12</h3>
+      <p>Clientes Registrados</p>
+    </div>
+  </div>
+  <div class="kpi-card">
+    <span class="material-symbols-outlined icon-green">payments</span>
+    <div class="kpi-info">
+      <h3>34 días</h3>
+      <p>Promedio de Pago Gral.</p>
+    </div>
+  </div>
+  <div class="kpi-card">
+    <span class="material-symbols-outlined icon-gold">star</span>
+    <div class="kpi-info">
+      <h3>4.2 / 5.0</h3>
+      <p>Calificación de Satisfacción</p>
+    </div>
+  </div>
+</div>
+
+<div class="table-container">
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>Institución / Empresa</th>
+        <th>Sector</th>
+        <th>Dirección Física</th>
+        <th>Prom. Días Pago</th>
+        <th>Calificación</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="font-bold">Alcaldía Municipal del Distrito Central (AMDC)</td>
+        <td><span class="badge badge-publico">Público</span></td>
+        <td>Col. 21 de Octubre, Tegucigalpa</td>
+        <td>45 días</td>
+        <td>
+          <div class="rating-stars">⭐⭐⭐⭐★ <span class="rating-text">(4.0)</span></div>
+        </td>
+        <td class="text-center">
+          <div class="action-buttons">
+            <button class="action-btn edit" title="Editar Cliente">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="action-btn delete" title="Eliminar Cliente">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="font-bold">Secretaría de Infraestructura y Transporte (SIT)</td>
+        <td><span class="badge badge-publico">Público</span></td>
+        <td>Barrio Morazán, Tegucigalpa</td>
+        <td>60 días</td>
+        <td>
+          <div class="rating-stars">⭐⭐★★★ <span class="rating-text">(2.5)</span></div>
+        </td>
+        <td class="text-center">
+          <div class="action-buttons">
+            <button class="action-btn edit">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+            <button class="action-btn delete">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
