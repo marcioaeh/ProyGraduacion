@@ -1,89 +1,144 @@
-<div class="page-header">
-  <div class="header-text">
-    <h2>Gestión de Clientes</h2>
-    <p>Monitoreo de carteras de clientes institucionales, métricas de pago y funcionarios autorizados.</p>
+<div class="container-clientes">
+  
+  <div class="header-modulo">
+    <div>
+      <h1 class="titulo-principal">🏢 Historial y Calificación de Clientes</h1>
+      <p class="subtitulo-principal">Monitoreo de comportamiento de pago, rúbrica de satisfacción y perfiles institucionales para ASP Consultores.</p>
+    </div>
+    <button (click)="openCreateForm()" class="btn-anadir">
+      ➕ Registrar Nuevo Cliente
+    </button>
   </div>
-  <button class="btn btn-primary" routerLink="/clientes/nuevo">
-    <span class="material-symbols-outlined">add</span>
-    Nuevo Cliente
-  </button>
+
+  <div class="panel-tabla" style="margin-bottom: 20px;">
+    <div class="barra-filtros">
+      <div class="contenedor-tabs">
+        <button (click)="selectedSector.set('todos')" [class.active]="selectedSector() === 'todos'" class="tab-link">Todos Sectores</button>
+        <button (click)="selectedSector.set('Público')" [class.active]="selectedSector() === 'Público'" class="tab-link">🏛️ Público</button>
+        <button (click)="selectedSector.set('Privado')" [class.active]="selectedSector() === 'Privado'" class="tab-link">🏢 Privado</button>
+        <button (click)="selectedSector.set('ONG')" [class.active]="selectedSector() === 'ONG'" class="tab-link">🤝 ONG</button>
+      </div>
+
+      <div class="buscador-wrapper">
+        <span class="icono-buscar">🔍</span>
+        <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+               placeholder="Buscar cliente por nombre o dirección..." class="input-busqueda" />
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-tabla">
+    <div class="scroll-tabla">
+      <table class="tabla-clientes">
+        <thead>
+          <tr>
+            <th>Nombre de la Institución</th>
+            <th>Sector</th>
+            <th>Dirección Física</th>
+            <th class="text-center">Satisfacción General</th>
+            <th class="text-center">Promedio Días Pago</th>
+            <th class="text-center">Historial</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cliente of filteredClientes()">
+            <td>
+              <div class="celda-nombre">{{ cliente.nombre_institucion }}</div>
+              <div class="celda-id">ID: {{ cliente.id_cliente }}</div>
+            </td>
+            <td>
+              <span class="badge-sector" [ngClass]="{
+                'sector-publico': cliente.sector === 'Público',
+                'sector-privado': cliente.sector === 'Privado',
+                'sector-ong': cliente.sector === 'ONG'
+              }">{{ cliente.sector }}</span>
+            </td>
+            <td style="max-width: 250px; color: #475569;">{{ cliente.direccion }}</td>
+            <td class="text-center">
+              <div class="estrellas-wrapper">
+                <span *ngFor="let star of [1,2,3,4,5]" class="estrella" [class.llena]="star <= cliente.calificacion_gral">★</span>
+                <span class="rating-numero">({{ cliente.calificacion_gral }})</span>
+              </div>
+            </td>
+            <td class="text-center">
+              <span class="badge-pago" [ngClass]="{
+                'pago-bueno': cliente.dias_prom_pago <= 30,
+                'pago-regular': cliente.dias_prom_pago > 30 && cliente.dias_prom_pago <= 60,
+                'pago-critico': cliente.dias_prom_pago > 60
+              }">{{ cliente.dias_prom_pago }} días</span>
+            </td>
+            <td class="text-center">
+              <button (click)="openRatingsModal(cliente)" class="btn-tabla-secundario">
+                📋 Ver Opiniones ({{ cliente.historial_opiniones.length }})
+              </button>
+            </td>
+            <td class="text-center">
+              <div class="acciones-flex">
+                <button (click)="openEditForm(cliente)" class="btn-accion" title="Editar Cliente">📝</button>
+                <button (click)="deleteCliente(cliente.id_cliente)" class="btn-accion" title="Eliminar Cliente">🗑️</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="filteredClientes().length === 0">
+            <td colspan="7" class="sin-datos">
+              <div style="font-size: 18px; margin-bottom: 4px;">🏢</div>
+              No se encontraron registros de clientes bajo los filtros aplicados.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="activeRatingsCliente()">
+    <div class="modal-box" style="max-width: 500px;">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-titulo">Historial de Opiniones</h2>
+          <p class="modal-subtitulo">{{ activeRatingsCliente()?.nombre_institucion }}</p>
+        </div>
+        <button (click)="closeRatingsModal()" class="btn-cerrar">✕</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="opinion-add-box">
+          <label style="font-weight:700; margin-bottom:4px; display:block;">Nueva Calificación Interna</label>
+          <div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
+            <select [(ngModel)]="nuevaPuntuacion" style="width:70px; padding:4px;">
+              <option *ngFor="let n of [5,4,3,2,1]" [value]="n">{{n}} ★</option>
+            </select>
+            <input type="text" [(ngModel)]="nuevaOpinion" placeholder="Escriba una breve reseña o lección aprendida..." style="flex:1; padding:4px 8px; border:1px solid #cbd5e1; border-radius:6px; font-size:11px;" />
+            <button (click)="addCalificacion()" class="btn-anadir" style="padding:4px 10px; border-radius:6px;">Añadir</button>
+          </div>
+        </div>
+
+        <div class="lista-opiniones">
+          <div *ngFor="let op of activeRatingsCliente()?.historial_opiniones" class="card-opinion">
+            <div class="opinion-top">
+              <div class="estrellas-wrapper">
+                <span *ngFor="let star of [1,2,3,4,5]" class="estrella" [class.llena]="star <= op.puntuacion">★</span>
+              </div>
+              <span class="opinion-fecha">{{ op.fecha }}</span>
+            </div>
+            <p class="opinion-texto">"{{ op.opinion }}"</p>
+          </div>
+          <div *ngIf="activeRatingsCliente()?.historial_opiniones?.length === 0" class="sin-datos" style="padding:16px;">
+            No hay opiniones registradas para este cliente aún.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="closeRatingsModal()" class="btn-cancelar">Cerrar Historial</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<div class="kpi-grid">
-  <div class="kpi-card">
-    <span class="material-symbols-outlined icon-blue">domain</span>
-    <div class="kpi-info">
-      <h3>12</h3>
-      <p>Clientes Registrados</p>
-    </div>
-  </div>
-  <div class="kpi-card">
-    <span class="material-symbols-outlined icon-green">payments</span>
-    <div class="kpi-info">
-      <h3>34 días</h3>
-      <p>Promedio de Pago Gral.</p>
-    </div>
-  </div>
-  <div class="kpi-card">
-    <span class="material-symbols-outlined icon-gold">star</span>
-    <div class="kpi-info">
-      <h3>4.2 / 5.0</h3>
-      <p>Calificación de Satisfacción</p>
-    </div>
-  </div>
-</div>
-
-<div class="table-container">
-  <table class="custom-table">
-    <thead>
-      <tr>
-        <th>Institución / Empresa</th>
-        <th>Sector</th>
-        <th>Dirección Física</th>
-        <th>Prom. Días Pago</th>
-        <th>Calificación</th>
-        <th class="text-center">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="font-bold">Alcaldía Municipal del Distrito Central (AMDC)</td>
-        <td><span class="badge badge-publico">Público</span></td>
-        <td>Col. 21 de Octubre, Tegucigalpa</td>
-        <td>45 días</td>
-        <td>
-          <div class="rating-stars">⭐⭐⭐⭐★ <span class="rating-text">(4.0)</span></div>
-        </td>
-        <td class="text-center">
-          <div class="action-buttons">
-            <button class="action-btn edit" title="Editar Cliente">
-              <span class="material-symbols-outlined">edit</span>
-            </button>
-            <button class="action-btn delete" title="Eliminar Cliente">
-              <span class="material-symbols-outlined">delete</span>
-            </button>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="font-bold">Secretaría de Infraestructura y Transporte (SIT)</td>
-        <td><span class="badge badge-publico">Público</span></td>
-        <td>Barrio Morazán, Tegucigalpa</td>
-        <td>60 días</td>
-        <td>
-          <div class="rating-stars">⭐⭐★★★ <span class="rating-text">(2.5)</span></div>
-        </td>
-        <td class="text-center">
-          <div class="action-buttons">
-            <button class="action-btn edit">
-              <span class="material-symbols-outlined">edit</span>
-            </button>
-            <button class="action-btn delete">
-              <span class="material-symbols-outlined">delete</span>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<app-cliente-form *ngIf="isFormOpen()" 
+                  [cliente]="selectedCliente()" 
+                  (closeForm)="handleFormSubmission($event)">
+</app-cliente-form>

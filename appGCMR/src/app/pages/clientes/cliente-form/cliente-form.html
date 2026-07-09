@@ -1,95 +1,59 @@
-<div class="form-container">
-  <div class="form-card-header">
-    <button class="back-btn" routerLink="/clientes">
-      <span class="material-symbols-outlined">arrow_back</span>
-    </button>
-    <div>
-      <h2>Registro de Nueva Institución / Cliente</h2>
-      <p>Ingrese la información legal del cliente corporativo y sus representantes firmantes autorizados.</p>
-    </div>
-  </div>
-
-  <form class="main-form">
-    <div class="form-section">
-      <div class="section-title">
-        <span class="number-indicator">1</span>
-        <h3>Información General de la Entidad</h3>
+<div class="modal-backdrop">
+  <div class="modal-box">
+    
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-titulo">{{ cliente ? '📝 Modificar Ficha de Cliente' : '➕ Registrar Ficha Corporativa' }}</h2>
+        <p class="modal-subtitulo">Asegure la correcta clasificación para auditorías internas de riesgo crediticio.</p>
       </div>
+      <button (click)="dismiss()" class="btn-cerrar">✕</button>
+    </div>
+
+    <form (ngSubmit)="submit()" class="modal-body">
       
-      <div class="input-grid">
-        <div class="form-group full-width">
-          <label>Nombre de la Institución u Organización *</label>
-          <input type="text" placeholder="Ej. Alcaldía Municipal del Distrito Central (AMDC)" required />
-        </div>
-
-        <div class="form-group">
-          <label>Sector / Rubro *</label>
-          <select required>
-            <option value="" disabled selected>Seleccione una opción</option>
-            <option value="publico">Público / Gubernamental</option>
-            <option value="privado">Privado / Comercial</option>
-            <option value="ong">ONG / Sin Fines de Lucro</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Días Promedio de Pago Estimados</label>
-          <input type="number" placeholder="Ej. 30" min="0" />
-        </div>
-
-        <div class="form-group full-width">
-          <label>Dirección Física o Institucional *</label>
-          <textarea rows="2" placeholder="Escriba detalladamente la ubicación del edificio o corporativo..."></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-section">
-      <div class="section-title">
-        <span class="number-indicator">2</span>
-        <h3>Funcionarios Clave y Representantes Legales</h3>
+      <div class="form-group">
+        <label>Nombre Legal de la Institución / Cliente *</label>
+        <input type="text" [(ngModel)]="nombre_institucion" name="nombre_institucion" placeholder="Ej. SIT, AMDC, BANHPROVI..." />
       </div>
 
-      <p class="section-desc">Especifique los funcionarios institucionales con capacidad resolutiva o firma autorizada para contratos.</p>
-
-      <div class="table-container mini-table">
-        <table class="custom-table">
-          <thead>
-            <tr>
-              <th>Nombre Completo del Funcionario</th>
-              <th>Cargo / Puesto</th>
-              <th>Correo Electrónico</th>
-              <th>Teléfono</th>
-              <th class="text-center">Firma Autorizada</th>
-              <th class="text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" class="table-input" placeholder="Nombre completo" value="Lic. Carlos Flores" /></td>
-              <td><input type="text" class="table-input" placeholder="Cargo" value="Director de Adquisiciones" /></td>
-              <td><input type="email" class="table-input" placeholder="correo@ejemplo.hn" value="carlos.flores@amdc.hn" /></td>
-              <td><input type="text" class="table-input" placeholder="Teléfono" value="+504 2221-0000" /></td>
-              <td class="text-center">
-                <input type="checkbox" class="custom-checkbox" checked />
-              </td>
-              <td class="text-center">
-                <button type="button" class="action-btn delete"><span class="material-symbols-outlined">delete</span></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="form-group">
+        <label>Sector / Rubro del Cliente *</label>
+        <select [(ngModel)]="sector" name="sector">
+          <option value="Público">Público / Gubernamental</option>
+          <option value="Privado">Privado / Comercial</option>
+          <option value="ONG">ONG / Sin Fines de Lucro</option>
+        </select>
       </div>
 
-      <button type="button" class="btn-secondary">
-        <span class="material-symbols-outlined">add_circle</span>
-        Añadir Otro Funcionario
-      </button>
-    </div>
+      <div class="form-group">
+        <label>Dirección Física Principal *</label>
+        <textarea [(ngModel)]="direccion" name="direccion" rows="3" placeholder="Detalle ubicación completa, oficinas corporativas..."></textarea>
+      </div>
 
-    <div class="form-actions">
-      <button type="button" class="btn btn-outline" routerLink="/clientes">Cancelar</button>
-      <button type="submit" class="btn btn-primary">Guardar Cliente Institucional</button>
-    </div>
-  </form>
+      <div class="seccion-metrica">
+        <div class="slider-header">
+          <span style="font-weight:700; color:#0f172a;">Promedio Histórico Días de Pago</span>
+          <strong class="dias-contador">{{ dias_prom_pago }} días</strong>
+        </div>
+        <p class="metrica-ayuda">Indique el desfase temporal en el desembolso de planillas de supervisión.</p>
+        <input type="range" min="15" max="120" step="5" [(ngModel)]="dias_prom_pago" name="dias_prom_pago" class="rango-puro" />
+        
+        <div class="indicador-alerta" [ngClass]="{
+          'b-verde': dias_prom_pago <= 30,
+          'b-amarillo': dias_prom_pago > 30 && dias_prom_pago <= 60,
+          'b-rojo': dias_prom_pago > 60
+        }">
+          @if(dias_prom_pago <= 30) { Retorno de inversión saludable e inmediato. }
+          @else if(dias_prom_pago <= 60) { Requiere monitoreo periódico de estimaciones. }
+          @else { ⚠️ Nivel crítico: Afecta directamente el flujo de caja del proyecto. }
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" (click)="dismiss()" class="btn-cancelar">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Ficha</button>
+      </div>
+
+    </form>
+  </div>
 </div>

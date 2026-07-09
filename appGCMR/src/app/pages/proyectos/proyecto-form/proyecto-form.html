@@ -1,1 +1,81 @@
-<p>proyecto-form works!</p>
+<div class="modal-backdrop">
+  <div class="modal-box">
+    
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-titulo">{{ isEditMode ? '📝 Modificar Proyecto Estructurado' : '➕ Aperturar Registro de Proyecto' }}</h2>
+        <p class="modal-subtitulo">Ingrese los alcances, presupuestos y vinculaciones contractuales institucionales.</p>
+      </div>
+      <button (click)="dismiss()" class="btn-cerrar">✕</button>
+    </div>
+
+    <form (ngSubmit)="submit()" class="modal-body">
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código Único de Proyecto *</label>
+          <input type="text" [(ngModel)]="id_proyecto" name="id_proyecto" placeholder="Ej. PRY-105" [disabled]="isEditMode" />
+        </div>
+        <div class="form-group">
+          <label>Especialidad / Tipo de Proyecto *</label>
+          <select [(ngModel)]="tipo" name="tipo">
+            <option value="Supervisión">Supervisión Técnica</option>
+            <option value="Diseño">Diseño / Consultoría Base</option>
+            <option value="Construcción">Construcción Civil</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre Completo del Proyecto / Obra *</label>
+        <input type="text" [(ngModel)]="nombre" name="nombre" placeholder="Ej. Supervisión Técnica del Tramo Vial..." />
+      </div>
+
+      <div class="form-group">
+        <label>Cliente / Institución Vinculada *</label>
+        <select [(ngModel)]="id_cliente" name="id_cliente">
+          <option *ngFor="let cli of clientes" [value]="cli.id">{{ cli.nombre }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Director / Ingeniero Encargado de Proyecto *</label>
+        <input type="text" [(ngModel)]="director" name="director" placeholder="Nombre del ingeniero residente o director..." />
+      </div>
+
+      <div class="form-grid">
+        
+        <div class="form-group">
+          <label>Fecha de Inicio de Labores</label>
+          <input type="date" [(ngModel)]="fecha_inicio" name="fecha_inicio" />
+        </div>
+        <div class="form-group">
+          <label>Fecha de Término de Labores</label>
+          <input type="date" [(ngModel)]="fecha_termino" name="fecha_termino" />
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Presupuesto Aprobado (HNL)</label>
+          <input type="number" [(ngModel)]="presupuesto" name="presupuesto" placeholder="Ej. 2500000" />
+        </div>
+        <div class="form-group">
+        <label>Estado Operativo Actual</label>
+        <select [(ngModel)]="estado_actual" name="estado_actual">
+          <option value="Planificación">Planificación / Línea Base</option>
+          <option value="Ejecución">Ejecución Activa en Campo</option>
+          <option value="Suspendido">Suspendido Temporalmente</option>
+          <option value="Finalizado">Finalizado / Cierre Contractual</option>
+        </select>
+      </div>
+      </div>
+      
+
+      <div class="modal-footer">
+        <button type="button" (click)="dismiss()" class="btn-cancelar">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Ficha</button>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,1 +1,97 @@
-<p>matriz-form works!</p>
+<div class="modal-backdrop">
+  <div class="modal-box">
+    
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-titulo">{{ riesgo ? '📝 Modificar Riesgo Analizado' : '➕ Identificar Riesgo en Matriz' }}</h2>
+        <p class="modal-subtitulo">Cuantificación bajo normativa ISO 31000 de Gestión de Riesgos.</p>
+      </div>
+      <button (click)="dismiss()" class="btn-cerrar">✕</button>
+    </div>
+
+    <form (ngSubmit)="submit()" class="modal-body">
+      
+      <div class="form-group">
+        <label>Categoría General del Riesgo *</label>
+        <select [(ngModel)]="categoria" name="categoria">
+          <option value="Técnico">Técnico / Operacional</option>
+          <option value="Financiero">Financiero / Económico</option>
+          <option value="Climático">Climático / Fuerza Mayor</option>
+          <option value="Social">Social / Comunitario</option>
+          <option value="Legal">Legal / Contractual</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción del Evento de Riesgo *</label>
+        <textarea [(ngModel)]="descripcion" name="descripcion" rows="2" placeholder="Describa la amenaza específica..."></textarea>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Causa Raíz Principal *</label>
+          <input type="text" [(ngModel)]="causaRaiz" name="causaRaiz" placeholder="Ej. Lluvias / Falta de liquidez" />
+        </div>
+        <div class="form-group">
+          <label>Consecuencia Inmediata *</label>
+          <input type="text" [(ngModel)]="consecuencia" name="consecuencia" placeholder="Ej. Retraso de cronograma" />
+        </div>
+      </div>
+
+      <div class="seccion-calculo">
+        <h3 class="seccion-titulo">⚠️ Matriz Inherente</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <div class="slider-header"><span>Probabilidad</span><strong>{{probabilidad}} / 3</strong></div>
+            <input type="range" min="1" max="3" step="1" [(ngModel)]="probabilidad" name="probabilidad" />
+          </div>
+          <div class="form-group">
+            <div class="slider-header"><span>Impacto / Severidad</span><strong>{{impacto}} / 3</strong></div>
+            <input type="range" min="1" max="3" step="1" [(ngModel)]="impacto" name="impacto" />
+          </div>
+        </div>
+        <div style="text-align: right; font-weight: 600; color: #475569;">
+          Valor Inherente: <span style="color: #0f172a;">{{inherentScore}}</span> — <span style="color: #2563eb;">{{getLabelForScore(inherentScore)}}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label style="color: #0f172a; margin-bottom: 2px;">🛡️ Plan de Mitigación</label>
+        <input type="text" [(ngModel)]="medidasMitigacion" name="medidasMitigacion" placeholder="Acciones preventivas u operativas..." />
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Responsable de Ejecución</label>
+          <input type="text" [(ngModel)]="responsable" name="responsable" />
+        </div>
+        <div class="form-group">
+          <div class="slider-header"><span>Efectividad del Control</span><strong>{{efectividadControl}}%</strong></div>
+          <input type="range" min="1" max="99" step="1" [(ngModel)]="efectividadControl" name="efectividadControl" />
+        </div>
+      </div>
+
+      <div class="banner-residual">
+        <div>
+          <span style="font-size: 9px; opacity: 0.8; display: block;">Métrica de Riesgo Residual</span>
+          <span class="banner-score">{{residualScore}}</span>
+        </div>
+        <span class="banner-badge">{{getLabelForScore(residualScore)}}</span>
+      </div>
+
+      <div class="form-group">
+        <label>Estado de Avance</label>
+        <select [(ngModel)]="estado" name="estado">
+          <option value="Abierto">Abierto</option>
+          <option value="Mitigado">Mitigado</option>
+          <option value="Materializado">Materializado</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" (click)="dismiss()" class="btn-cancelar">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Riesgo</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,1 +1,98 @@
-<p>proyectos-list works!</p>
+<div class="container-proyectos">
+  
+  <div class="header-modulo">
+    <div>
+      <h1 class="titulo-principal">📁 Cartera y Control de Proyectos</h1>
+      <p class="subtitulo-principal">Administración presupuestaria, asignación de directores y monitoreo de estados de obras para ASP Consultores.</p>
+    </div>
+    <button (click)="openCreateForm()" class="btn-anadir">
+      ➕ Registrar Nuevo Proyecto
+    </button>
+  </div>
+
+  <div class="panel-tabla" style="margin-bottom: 20px;">
+    <div class="barra-filtros">
+      <div class="contenedor-tabs">
+        <button (click)="selectedStatus.set('todos')" [class.active]="selectedStatus() === 'todos'" class="tab-link">Todos</button>
+        <button (click)="selectedStatus.set('Planificación')" [class.active]="selectedStatus() === 'Planificación'" class="tab-link">🗒️ Planificación</button>
+        <button (click)="selectedStatus.set('Ejecución')" [class.active]="selectedStatus() === 'Ejecución'" class="tab-link">⚡ Ejecución</button>
+        <button (click)="selectedStatus.set('Suspendido')" [class.active]="selectedStatus() === 'Suspendido'" class="tab-link">⚠️ Suspendido</button>
+        <button (click)="selectedStatus.set('Finalizado')" [class.active]="selectedStatus() === 'Finalizado'" class="tab-link">✅ Finalizado</button>
+      </div>
+
+      <div class="buscador-wrapper">
+        <span class="icono-buscar">🔍</span>
+        <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+               placeholder="Buscar por código, proyecto o director..." class="input-busqueda" />
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-tabla">
+    <div class="scroll-tabla">
+      <table class="tabla-proyectos">
+        <thead>
+          <tr>
+            <th>Código / Proyecto</th>
+            <th>Cliente Institucional</th>
+            <th>Especialidad / Tipo</th>
+            <th>Director Asignado</th>
+            <th class="text-right">Presupuesto</th>
+            <th class="text-center">Fecha Inicio / Finalización</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pry of filteredProyectos()">
+            <td>
+              <div class="celda-codigo">{{ pry.id_proyecto }}</div>
+              <div class="celda-nombre">{{ pry.nombre }}</div>
+            </td>
+            <td style="max-width: 220px; color: #475569;">{{ pry.nombre_cliente }}</td>
+            <td>
+              <span class="badge-tipo" [ngClass]="{
+                'tipo-supervision': pry.tipo === 'Supervisión',
+                'tipo-diseno': pry.tipo === 'Diseño',
+                'tipo-construccion': pry.tipo === 'Construcción'
+              }">{{ pry.tipo }}</span>
+            </td>
+            <td style="font-weight: 500; color: #0f172a;">👤 {{ pry.director }}</td>
+            <td class="text-right font-mono" style="font-weight: 700; color: #334155;">
+              L. {{ pry.presupuesto.toLocaleString('es-HN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
+            </td>
+            <td class="text-center" style="color: #64748b;">{{ pry.fecha_inicio }} / {{ pry.fecha_termino }}</td>
+            <td class="text-center">
+              <span class="badge-estado" [ngClass]="{
+                'estado-plan': pry.estado_actual === 'Planificación',
+                'estado-ejec': pry.estado_actual === 'Ejecución',
+                'estado-susp': pry.estado_actual === 'Suspendido',
+                'estado-fin': pry.estado_actual === 'Finalizado'
+              }">{{ pry.estado_actual }}</span>
+            </td>
+            <td class="text-center">
+              <div class="acciones-flex">
+                <button (click)="openEditForm(pry)" class="btn-accion" title="Editar Proyecto">📝</button>
+                <button (click)="deleteProyecto(pry.id_proyecto)" class="btn-accion" title="Eliminar Proyecto">🗑️</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="filteredProyectos().length === 0">
+            <td colspan="8" class="sin-datos">
+              <div style="font-size: 18px; margin-bottom: 4px;">📁</div>
+              No se localizaron proyectos registrados bajo los criterios de búsqueda establecidos.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<app-proyecto-form *ngIf="isFormOpen()"
+                   [proyecto]="selectedProyecto()"
+                   [clientes]="clientesDisponibles()"
+                   (closeForm)="handleFormSubmission($event)">
+</app-proyecto-form>

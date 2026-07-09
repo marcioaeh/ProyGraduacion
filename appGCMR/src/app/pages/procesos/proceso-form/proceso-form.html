@@ -1,1 +1,52 @@
-<p>proceso-form works!</p>
+<div class="modal-backdrop">
+  <div class="modal-box">
+    
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-titulo">{{ isEditMode ? '📝 Modificar Estructura de Proceso' : '➕ Aperturar Proceso Organizacional' }}</h2>
+        <p class="modal-subtitulo">Defina los límites operativos, alcances funcionales y dueños de procesos de soporte.</p>
+      </div>
+      <button (click)="dismiss()" class="btn-cerrar">✕</button>
+    </div>
+
+    <form (ngSubmit)="submit()" class="modal-body">
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Código Interno de Proceso *</label>
+          <input type="text" [(ngModel)]="id_proceso" name="id_proceso" placeholder="Ej. PROC-004" [disabled]="isEditMode" />
+        </div>
+        <div class="form-group">
+          <label>Departamento Propietario *</label>
+          <select [(ngModel)]="departamento" name="departamento">
+            <option value="Legal">Legal y Cumplimiento</option>
+            <option value="Ingeniería">Ingeniería y Supervisión</option>
+            <option value="Finanzas">Finanzas y Contabilidad</option>
+            <option value="Recursos Humanos">Recursos Humanos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre de Proceso / Flujo Lineal *</label>
+        <input type="text" [(ngModel)]="nombre" name="nombre" placeholder="Ej. Homologación de Proveedores de Obra..." />
+      </div>
+
+      <div class="form-group">
+        <label>Líder de Proceso / Responsable Directo *</label>
+        <input type="text" [(ngModel)]="responsable" name="responsable" placeholder="Nombre completo del gestor responsable..." />
+      </div>
+
+      <div class="form-group">
+        <label>Descripción Operativa Completa *</label>
+        <textarea [(ngModel)]="descripcion" name="descripcion" rows="4" placeholder="Detalle las actividades secuenciales, controles clave y objetivos institucionales de este proceso..."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" (click)="dismiss()" class="btn-cancelar">Cancelar</button>
+        <button type="submit" class="btn-guardar">Guardar Estructura</button>
+      </div>
+
+    </form>
+  </div>
+</div>

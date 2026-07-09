@@ -1,1 +1,83 @@
-<p>procesos-list works!</p>
+<div class="container-procesos">
+  
+  <div class="header-modulo">
+    <div>
+      <h1 class="titulo-principal">⚙️ Gestión de Procesos Internos</h1>
+      <p class="subtitulo-principal">Estructuración de flujos departamentales, asignación de responsables y auditorías de línea base para ASP Consultores.</p>
+    </div>
+    <button (click)="openCreateForm()" class="btn-anadir">
+      ➕ Registrar Nuevo Proceso
+    </button>
+  </div>
+
+  <div class="panel-tabla" style="margin-bottom: 20px;">
+    <div class="barra-filtros">
+      <div class="contenedor-tabs">
+        <button (click)="selectedDept.set('todos')" [class.active]="selectedDept() === 'todos'" class="tab-link">Todos</button>
+        <button (click)="selectedDept.set('Legal')" [class.active]="selectedDept() === 'Legal'" class="tab-link">⚖️ Legal</button>
+        <button (click)="selectedDept.set('Ingeniería')" [class.active]="selectedDept() === 'Ingeniería'" class="tab-link">🏗️ Ingeniería</button>
+        <button (click)="selectedDept.set('Finanzas')" [class.active]="selectedDept() === 'Finanzas'" class="tab-link">💵 Finanzas</button>
+        <button (click)="selectedDept.set('Recursos Humanos')" [class.active]="selectedDept() === 'Recursos Humanos'" class="tab-link">👥 RRHH</button>
+      </div>
+
+      <div class="buscador-wrapper">
+        <span class="icono-buscar">🔍</span>
+        <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+               placeholder="Buscar por código, proceso o responsable..." class="input-busqueda" />
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-tabla">
+    <div class="scroll-tabla">
+      <table class="tabla-procesos">
+        <thead>
+          <tr>
+            <th>Código / Proceso</th>
+            <th>Departamento</th>
+            <th>Responsable Directo</th>
+            <th style="width: 40%;">Descripción Operativa</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let proc of filteredProcesos()">
+            <td>
+              <div class="celda-codigo">{{ proc.id_proceso }}</div>
+              <div class="celda-nombre">{{ proc.nombre }}</div>
+            </td>
+            <td>
+              <span class="badge-dept" [ngClass]="{
+                'dept-legal': proc.departamento === 'Legal',
+                'dept-ingenieria': proc.departamento === 'Ingeniería',
+                'dept-finanzas': proc.departamento === 'Finanzas',
+                'dept-rrhh': proc.departamento === 'Recursos Humanos'
+              }">{{ proc.departamento }}</span>
+            </td>
+            <td style="font-weight: 600; color: #0f172a;">👤 {{ proc.responsable }}</td>
+            <td class="celda-descripcion-larga">{{ proc.descripcion }}</td>
+            <td class="text-center">
+              <div class="acciones-flex">
+                <button (click)="openEditForm(proc)" class="btn-accion" title="Editar Proceso">📝</button>
+                <button (click)="deleteProceso(proc.id_proceso)" class="btn-accion" title="Eliminar Proceso">🗑️</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="filteredProcesos().length === 0">
+            <td colspan="5" class="sin-datos">
+              <div style="font-size: 18px; margin-bottom: 4px;">⚙️</div>
+              No se localizaron procesos operativos bajo los criterios de búsqueda establecidos.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<app-proceso-form *ngIf="isFormOpen()"
+                  [proceso]="selectedProceso()"
+                  (closeForm)="handleFormSubmission($event)">
+</app-proceso-form>

@@ -1,1 +1,108 @@
-<p>matrices-list works!</p>
+<div class="container-riesgos">
+  
+  <div class="header-modulo">
+    <div>
+      <h1 class="titulo-principal">📊 Centralización y Matrices de Riesgo</h1>
+      <p class="subtitulo-principal">Arquitectura modular: 1 Matriz de Riesgo única por cada estructura organizativa de ASP Consultores.</p>
+    </div>
+  </div>
+
+  <div class="panel-tabla" style="margin-bottom: 20px;">
+    <div class="barra-filtros">
+      <div class="contenedor-tabs">
+        <button (click)="activeTab.set('proyectos')" [class.active]="activeTab() === 'proyectos'" class="tab-link">
+          📁 Matrices de Proyectos
+        </button>
+        <button (click)="activeTab.set('procesos')" [class.active]="activeTab() === 'procesos'" class="tab-link">
+          ⚙️ Matrices de Procesos
+        </button>
+      </div>
+
+      <div class="buscador-wrapper">
+        <span class="icono-buscar">🔍</span>
+        <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+               placeholder="Buscar por proyecto, proceso o palabra clave..." class="input-busqueda" />
+      </div>
+    </div>
+  </div>
+
+  <div *ngFor="let matriz of filteredMatrices()" class="panel-tabla" style="margin-bottom: 24px;">
+    
+    <div class="matriz-header-row">
+      <div class="matriz-meta-info">
+        <h3>{{ matriz.nombre }} <span style="font-size: 11px; font-weight: normal; color:#94a3b8;">({{matriz.id_origen}})</span></h3>
+        <p>{{ matriz.detalles }} &nbsp;|&nbsp; 👤 Responsable: <strong>{{ matriz.encargado }}</strong></p>
+      </div>
+      <button (click)="openCreateRiesgo(matriz.id_origen)" class="btn-riesgo-accion">
+        ➕ Identificar Riesgo en esta Matriz
+      </button>
+    </div>
+
+    <div class="scroll-tabla">
+      <table class="tabla-riesgos" *ngIf="matriz.lista_riesgos.length > 0">
+        <thead>
+          <tr>
+            <th style="width: 30%;">Identificación del Riesgo</th>
+            <th>Categoría</th>
+            <th class="text-center">Riesgo Inherente</th>
+            <th style="width: 30%;">Medidas de Mitigación / Responsable</th>
+            <th class="text-center">Riesgo Residual</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let riesgo of matriz.lista_riesgos">
+            <td>
+              <div class="celda-descripcion">{{riesgo.descripcion}}</div>
+              <div class="celda-causa">Causa Raíz: {{riesgo.causaRaiz}}</div>
+              <div class="celda-causa" style="color: #64748b;">Consecuencia: {{riesgo.consecuencia}}</div>
+            </td>
+            <td><span class="badge-categoria">{{riesgo.categoria}}</span></td>
+            <td class="text-center">
+              @let scoreInh = riesgo.probabilidad * riesgo.impacto;
+              <span [ngClass]="getStyleClassForScore(scoreInh)" class="badge-criticidad">
+                {{scoreInh}} - {{getLabelForScore(scoreInh)}}
+              </span>
+            </td>
+            <td>
+              <div style="color: #475569; font-weight: 500;">{{riesgo.medidasMitigacion}}</div>
+              <div class="celda-responsable">👤 {{riesgo.responsable}} (Efectividad: {{riesgo.efectividadControl}}%)</div>
+            </td>
+            <td class="text-center">
+              @let scoreRes = (riesgo.probabilidad * riesgo.impacto) * (1 - riesgo.efectividadControl / 100);
+              <span [ngClass]="getStyleClassForScore(scoreRes)" class="badge-criticidad">
+                {{scoreRes.toFixed(1)}} - {{getLabelForScore(scoreRes)}}
+              </span>
+            </td>
+            <td class="text-center">
+              <span [ngClass]="{
+                'estado-abierto': riesgo.estado === 'Abierto',
+                'estado-mitigado': riesgo.estado === 'Mitigado',
+                'estado-materializado': riesgo.estado === 'Materializado'
+              }" class="estado-badge">
+                {{riesgo.estado}}
+              </span>
+            </td>
+            <td class="text-center">
+              <div class="acciones-flex">
+                <button (click)="openEditRiesgo(matriz.id_origen, riesgo)" class="btn-accion" title="Editar Riesgo">📝</button>
+                <button (click)="deleteRiesgo(matriz.id_origen, riesgo.id_riesgo)" class="btn-accion" title="Remover Riesgo">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div *ngIf="matriz.lista_riesgos.length === 0" class="sin-datos">
+        ⚠️ Esta matriz no cuenta con riesgos identificados en este momento.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<app-matriz-form *ngIf="isFormOpen()" 
+                 [riesgo]="selectedRiesgo()" 
+                 (closeForm)="handleFormSubmission($event)">
+</app-matriz-form>

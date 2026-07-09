@@ -1,0 +1,300 @@
+.container-riesgos {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #334155;
+}
+
+.header-modulo {
+  max-width: 1200px;
+  margin: 0 auto 24px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .header-modulo {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.titulo-principal {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.subtitulo-principal {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+}
+
+.panel-tabla {
+  max-width: 1200px;
+  margin: 0 auto 32px auto;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.barra-filtros {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .barra-filtros {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.contenedor-tabs {
+  display: flex;
+  padding: 4px;
+  background-color: #e2e8f0;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.tab-link {
+  flex: 1;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-link.active {
+  background-color: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.buscador-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.icono-buscar {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.input-busqueda {
+  width: 100%;
+  padding: 6px 12px 6px 36px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+/* --- Estructura de Tarjeta/Sección por Proyecto o Proceso --- */
+.bloque-matriz {
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+}
+
+.matriz-header-row {
+  padding: 16px;
+  background-color: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.matriz-meta-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.matriz-meta-info p {
+  margin: 0;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.btn-riesgo-accion {
+  background-color: #0f172a;
+  color: #ffffff;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-riesgo-accion:hover {
+  background-color: #1e293b;
+}
+
+/* --- Tabla Interna de Riesgos --- */
+.scroll-tabla {
+  overflow-x: auto;
+}
+
+.tabla-riesgos {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+}
+
+.tabla-riesgos th {
+  background-color: #ffffff;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.tabla-riesgos td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.celda-descripcion {
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.celda-causa {
+  font-size: 10px;
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+.celda-responsable {
+  font-size: 10px;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.badge-categoria {
+  padding: 2px 8px;
+  background-color: #f1f5f9;
+  color: #475569;
+  border-radius: 9999px;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.badge-criticidad {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: monospace;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.criticidad-critico {
+  color: #b91c1c;
+  background-color: #fef2f2;
+  border-color: #fee2e2;
+}
+
+.criticidad-alto {
+  color: #b45309;
+  background-color: #fffbeb;
+  border-color: #fef3c7;
+}
+
+.criticidad-medio {
+  color: #1d4ed8;
+  background-color: #eff6ff;
+  border-color: #dbeafe;
+}
+
+.criticidad-bajo {
+  color: #047857;
+  background-color: #ecfdf5;
+  border-color: #d1fae5;
+}
+
+.estado-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.estado-abierto {
+  background-color: #fffbeb;
+  color: #b45309;
+}
+
+.estado-mitigado {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+.estado-materializado {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.acciones-flex {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn-accion {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-accion:hover {
+  background-color: #f1f5f9;
+}
+
+.sin-datos {
+  padding: 24px;
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+}
