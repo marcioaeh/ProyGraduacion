@@ -39,15 +39,15 @@
       </div>
 
       <div class="seccion-calculo">
-        <h3 class="seccion-titulo">⚠️ Matriz Inherente</h3>
+        <h3 class="seccion-titulo">⚠️ Riesgo Inherente</h3>
         <div class="form-grid">
           <div class="form-group">
-            <div class="slider-header"><span>Probabilidad</span><strong>{{probabilidad}} / 3</strong></div>
-            <input type="range" min="1" max="3" step="1" [(ngModel)]="probabilidad" name="probabilidad" />
+            <div class="slider-header"><span>Probabilidad</span><strong>{{probabilidad}} / 5</strong></div>
+            <input type="range" min="1" max="5" step="1" [(ngModel)]="probabilidad" name="probabilidad" />
           </div>
           <div class="form-group">
-            <div class="slider-header"><span>Impacto / Severidad</span><strong>{{impacto}} / 3</strong></div>
-            <input type="range" min="1" max="3" step="1" [(ngModel)]="impacto" name="impacto" />
+            <div class="slider-header"><span>Impacto / Severidad</span><strong>{{impacto}} / 5</strong></div>
+            <input type="range" min="1" max="5" step="1" [(ngModel)]="impacto" name="impacto" />
           </div>
         </div>
         <div style="text-align: right; font-weight: 600; color: #475569;">
@@ -65,20 +65,10 @@
           <label>Responsable de Ejecución</label>
           <input type="text" [(ngModel)]="responsable" name="responsable" />
         </div>
-        <div class="form-group">
-          <div class="slider-header"><span>Efectividad del Control</span><strong>{{efectividadControl}}%</strong></div>
-          <input type="range" min="1" max="99" step="1" [(ngModel)]="efectividadControl" name="efectividadControl" />
-        </div>
+       
       </div>
 
-      <div class="banner-residual">
-        <div>
-          <span style="font-size: 9px; opacity: 0.8; display: block;">Métrica de Riesgo Residual</span>
-          <span class="banner-score">{{residualScore}}</span>
-        </div>
-        <span class="banner-badge">{{getLabelForScore(residualScore)}}</span>
-      </div>
-
+      
       <div class="form-group">
         <label>Estado de Avance</label>
         <select [(ngModel)]="estado" name="estado">

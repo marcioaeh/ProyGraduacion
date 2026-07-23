@@ -8,7 +8,7 @@
 .sidebar-logo {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 14px;
   gap: 12px;
   background-color: #0f172a;
 }

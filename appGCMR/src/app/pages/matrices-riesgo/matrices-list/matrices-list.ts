@@ -9,11 +9,10 @@ export interface RiesgoItem {
   descripcion: string;
   causaRaiz: string;
   consecuencia: string;
-  probabilidad: number;
-  impacto: number;
+  probabilidad: number; // 1 a 5
+  impacto: number;      // 1 a 5
   medidasMitigacion: string;
   responsable: string;
-  efectividadControl: number;
   estado: 'Abierto' | 'Mitigado' | 'Materializado';
 }
 
@@ -38,9 +37,11 @@ export class MatricesList {
   
   isFormOpen = signal<boolean>(false);
   selectedRiesgo = signal<RiesgoItem | null>(null);
-  selectedContextoId = signal<string>(''); // ID del Proyecto o Proceso seleccionado para añadir/editar
+  selectedContextoId = signal<string>(''); 
 
-  // Matrices de Riesgo organizadas ÚNICAMENTE como 1 Matriz por cada Proyecto
+  expandedMatrices = signal<Set<string>>(new Set());
+
+  // Matrices de Riesgo de Proyectos
   matricesProyectos = signal<ContextoMatriz[]>([
     {
       id_origen: 'PRY-101',
@@ -54,13 +55,84 @@ export class MatricesList {
           descripcion: 'Fallas geotécnicas imprevistas en los taludes del kilómetro 45.',
           causaRaiz: 'Saturación extrema por lluvias estacionales',
           consecuencia: 'Paralización de obras civiles y renegociación contractual',
+          probabilidad: 1,
+          impacto: 2,
+          medidasMitigacion: 'Instalación de inclinómetros digitales y monitoreo diario',
+          responsable: 'Geólogo de Campo',
+          estado: 'Abierto'
+        },
+         {
+          id_riesgo: 'r-101-1',
+          categoria: 'Técnico',
+          descripcion: 'Fallas geotécnicas imprevistas en los taludes del kilómetro 45.',
+          causaRaiz: 'Saturación extrema por lluvias estacionales',
+          consecuencia: 'Paralización de obras civiles y renegociación contractual',
+          probabilidad: 2,
+          impacto: 2,
+          medidasMitigacion: 'Instalación de inclinómetros digitales y monitoreo diario',
+          responsable: 'Geólogo de Campo',
+          estado: 'Abierto'
+        },
+        {
+          id_riesgo: 'r-101-2',
+          categoria: 'Técnico',
+          descripcion: 'Fallas geotécnicas imprevistas en los taludes del kilómetro 45.',
+          causaRaiz: 'Saturación extrema por lluvias estacionales',
+          consecuencia: 'Paralización de obras civiles y renegociación contractual',
           probabilidad: 3,
           impacto: 3,
           medidasMitigacion: 'Instalación de inclinómetros digitales y monitoreo diario',
           responsable: 'Geólogo de Campo',
-          efectividadControl: 70,
           estado: 'Abierto'
-        }
+        },
+        {
+          id_riesgo: 'r-101-3',
+          categoria: 'Técnico',
+          descripcion: 'Fallas geotécnicas imprevistas en los taludes del kilómetro 45.',
+          causaRaiz: 'Saturación extrema por lluvias estacionales',
+          consecuencia: 'Paralización de obras civiles y renegociación contractual',
+          probabilidad: 4,
+          impacto: 3,
+          medidasMitigacion: 'Instalación de inclinómetros digitales y monitoreo diario',
+          responsable: 'Geólogo de Campo',
+          estado: 'Abierto'
+        },
+        {
+          id_riesgo: 'r-101-4',
+          categoria: 'Técnico',
+          descripcion: 'Fallas geotécnicas imprevistas en los taludes del kilómetro 45.',
+          causaRaiz: 'Saturación extrema por lluvias estacionales',
+          consecuencia: 'Paralización de obras civiles y renegociación contractual',
+          probabilidad: 4,
+          impacto: 4,
+          medidasMitigacion: 'Instalación de inclinómetros digitales y monitoreo diario',
+          responsable: 'Geólogo de Campo',
+          estado: 'Abierto'
+        },
+        {
+          id_riesgo: 'r-101-5',
+          categoria: 'Técnico',
+          descripcion: 'Fallas geotécnicas imprevistas en los taludes del kilómetro 45.',
+          causaRaiz: 'Saturación extrema por lluvias estacionales',
+          consecuencia: 'Paralización de obras civiles y renegociación contractual',
+          probabilidad: 4,
+          impacto: 5,
+          medidasMitigacion: 'Instalación de inclinómetros digitales y monitoreo diario',
+          responsable: 'Geólogo de Campo',
+          estado: 'Abierto'
+        },
+        {
+          id_riesgo: 'r-101-6',
+          categoria: 'Técnico',
+          descripcion: 'Fallas geotécnicas imprevistas en los taludes del kilómetro 45.',
+          causaRaiz: 'Saturación extrema por lluvias estacionales',
+          consecuencia: 'Paralización de obras civiles y renegociación contractual',
+          probabilidad: 5,
+          impacto: 5,
+          medidasMitigacion: 'Instalación de inclinómetros digitales y monitoreo diario',
+          responsable: 'Geólogo de Campo',
+          estado: 'Abierto'
+        },
       ]
     },
     {
@@ -72,7 +144,7 @@ export class MatricesList {
     }
   ]);
 
-  // Matrices de Riesgo organizadas ÚNICAMENTE como 1 Matriz por cada Proceso Interno
+  // Matrices de Riesgo de Procesos
   matricesProcesos = signal<ContextoMatriz[]>([
     {
       id_origen: 'PROC-01',
@@ -86,33 +158,28 @@ export class MatricesList {
           descripcion: 'Impugnaciones al pliego de condiciones por parte de competidores.',
           causaRaiz: 'Ambigüedad en cláusulas técnicas específicas',
           consecuencia: 'Retraso de 3 a 6 meses en la adjudicación',
-          probabilidad: 2,
-          impacto: 3,
+          probabilidad: 3,
+          impacto: 4,
           medidasMitigacion: 'Revisión por terna legal externa antes de publicación formal',
           responsable: 'Gerente Legal',
-          efectividadControl: 50,
           estado: 'Mitigado'
         }
       ]
     }
   ]);
 
-  // Selección dinámica de la fuente de datos
   currentCollection = computed(() => {
     return this.activeTab() === 'proyectos' ? this.matricesProyectos() : this.matricesProcesos();
   });
 
-  // Filtrado reactivo en cascada (busca tanto en títulos de matrices como en descripciones de sus riesgos)
   filteredMatrices = computed(() => {
     const term = this.searchTerm().toLowerCase();
     if (!term) return this.currentCollection();
 
     return this.currentCollection().map(matriz => {
-      // Si el nombre de la matriz coincide, mantenemos todos sus riesgos
       if (matriz.nombre.toLowerCase().includes(term) || matriz.encargado.toLowerCase().includes(term)) {
         return matriz;
       }
-      // Si no, filtramos para ver si algún riesgo interno coincide
       const riesgosFiltrados = matriz.lista_riesgos.filter(r => 
         r.descripcion.toLowerCase().includes(term) || 
         r.categoria.toLowerCase().includes(term)
@@ -121,18 +188,39 @@ export class MatricesList {
     }).filter(matriz => matriz.lista_riesgos.length > 0 || matriz.nombre.toLowerCase().includes(term));
   });
 
+  toggleMatrixExpansion(idOrigen: string) {
+    this.expandedMatrices.update(set => {
+      const newSet = new Set(set);
+      if (newSet.has(idOrigen)) {
+        newSet.delete(idOrigen);
+      } else {
+        newSet.add(idOrigen);
+      }
+      return newSet;
+    });
+  }
+
+  isMatrixExpanded(idOrigen: string): boolean {
+    return this.expandedMatrices().has(idOrigen);
+  }
+
+  // Mapeo dinámico de Etiquetas para la Escala 1 a 25
   getLabelForScore(score: number): string {
-    if (score >= 9) return 'Crítico';
-    if (score >= 6) return 'Alto';
-    if (score >= 3) return 'Medio';
-    return 'Bajo';
+    if (score >= 20) return 'Crítico';
+    if (score >= 15) return 'Muy Alto';
+    if (score >= 10) return 'Alto';
+    if (score >= 5) return 'Medio';
+    if (score >= 3) return 'Bajo';
+    return 'Muy Bajo';
   }
 
   getStyleClassForScore(score: number): string {
-    if (score >= 9) return 'criticidad-critico';
-    if (score >= 6) return 'criticidad-alto';
-    if (score >= 3) return 'criticidad-medio';
-    return 'criticidad-bajo';
+    if (score >= 20) return 'criticidad-critico';
+    if (score >= 15) return 'criticidad-muy-alto';
+    if (score >= 10) return 'criticidad-alto';
+    if (score >= 5) return 'criticidad-medio';
+    if (score >= 3) return 'criticidad-bajo';
+    return 'criticidad-muy-bajo';
   }
 
   openCreateRiesgo(idOrigen: string) {
@@ -170,14 +258,17 @@ export class MatricesList {
       const riesgoData = event.data;
       const idOrigen = this.selectedContextoId();
 
+      // Abrir automáticamente el acordeón al crear o guardar
+      this.expandedMatrices.update(set => new Set(set).add(idOrigen));
+
       const updateFn = (list: ContextoMatriz[]) => list.map(m => {
         if (m.id_origen === idOrigen) {
           const index = m.lista_riesgos.findIndex(r => r.id_riesgo === riesgoData.id_riesgo);
           const nuevaLista = [...m.lista_riesgos];
           if (index !== -1) {
-            nuevaLista[index] = riesgoData; // Editar
+            nuevaLista[index] = riesgoData;
           } else {
-            nuevaLista.push(riesgoData); // Crear nuevo riesgo dentro de esta única matriz
+            nuevaLista.push(riesgoData);
           }
           return { ...m, lista_riesgos: nuevaLista };
         }

@@ -1,1 +1,114 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  
+  <div class="dashboard-header">
+    <div>
+      <h1 class="titulo-bienvenida">🏛️ Panel de Control General</h1>
+      <p class="subtitulo-header">Resumen ejecutivo del portafolio de supervisión y matriz de riesgos de ASP Consultores.</p>
+    </div>
+    <div class="badge-status-operativo">🟢 Sistema Operativo</div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon icon-blue">💼</div>
+      <div class="kpi-info">
+        <span class="kpi-label">Proyectos Registrados</span>
+        <div class="kpi-valor">{{ totalProyectos() }}</div>
+        <span class="kpi-sub">{{ proyectosActivos() }} en ejecución activa</span>
+      </div>
+    </div>
+
+  
+
+    <div class="kpi-card">
+      <div class="kpi-icon icon-amber">🏢</div>
+      <div class="kpi-info">
+        <span class="kpi-label">Clientes / Entidades</span>
+        <div class="kpi-valor">{{ totalClientes() }}</div>
+        <span class="kpi-sub">Instituciones públicas y ONGs</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon icon-rose">⚠️</div>
+      <div class="kpi-info">
+        <span class="kpi-label">Riesgos Registrados</span>
+        <div class="kpi-valor text-rose">{{ riesgos().length }}</div>
+        <span class="kpi-sub">Evaluados en matriz 5x5</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="panel-box flex-2">
+      <div class="panel-header">
+        <h2 class="panel-title">🔔 Notificaciones y Alertas Operativas</h2>
+        <span class="badge-alerta-count" *ngIf="activeAlertsCount() > 0">{{ activeAlertsCount() }} pendientes</span>
+      </div>
+
+      <div class="alertas-list">
+        <div *ngFor="let alerta of alertas()" class="alerta-card" [ngClass]="{
+          'alerta-critica': alerta.tipo === 'critico',
+          'alerta-advertencia': alerta.tipo === 'advertencia',
+          'alerta-leida': alerta.estado_leida
+        }">
+          <div class="alerta-body">
+            <div class="alerta-titulo-row">
+              <span class="alerta-titulo">{{ alerta.titulo }}</span>
+              <span class="alerta-fecha">{{ alerta.fecha }}</span>
+            </div>
+            <p class="alerta-mensaje">{{ alerta.mensaje }}</p>
+          </div>
+          <button *ngIf="!alerta.estado_leida" (click)="marcarLeida(alerta.id_alerta)" class="btn-marcar-leida">✓</button>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div class="panel-box flex-1">
+      <div class="panel-header">
+        <h2 class="panel-title">🔥 Matriz Gráfica de Criticidad</h2>
+      </div>
+      
+      <p class="matrix-desc">Distribución de riesgos según Probabilidad vs Impacto:</p>
+
+      <div class="heatmap-wrapper">
+        <div class="axis-label-y">PROBABILIDAD ➔</div>
+
+        <div class="heatmap-container">
+          <div *ngFor="let p of filasProbabilidad" class="heatmap-row">
+            <span class="axis-num">{{ p }}</span>
+            
+            <div *ngFor="let i of columnasImpacto" 
+                 class="heatmap-cell" 
+                 [ngClass]="getCellClass(p, i)">
+              <span class="cell-score">{{ p * i }}</span>
+              <span *ngIf="getRiskCountInCell(p, i) > 0" class="risk-pill">
+                {{ getRiskCountInCell(p, i) }}
+              </span>
+            </div>
+          </div>
+
+          <div class="heatmap-row axis-x-row">
+            <span class="axis-num"></span>
+            <span *ngFor="let i of columnasImpacto" class="axis-num-x">{{ i }}</span>
+          </div>
+          <div class="axis-label-x">IMPACTO ➔</div>
+        </div>
+      </div>
+
+      <div class="heatmap-legend">
+        <div class="legend-item"><span class="dot dot-critico"></span> Crítico (20-25)</div>
+        <div class="legend-item"><span class="dot dot-muy-alto"></span> Muy Alto (15-19)</div>
+        <div class="legend-item"><span class="dot dot-alto"></span> Alto (10-14)</div>
+        <div class="legend-item"><span class="dot dot-medio"></span> Medio (5-9)</div>
+        <div class="legend-item"><span class="dot dot-bajo"></span> Bajo (1-4)</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

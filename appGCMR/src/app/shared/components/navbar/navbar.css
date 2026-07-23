@@ -1,54 +1,67 @@
-.navbar-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  right: auto;
-  align-items: center;
+:host {
+  display: block;
   width: 100%;
-  height: 100%;
 }
 
-.navbar-title h1 {
-  font-size: 18px;
-  color: #1e293b;
-  margin: 0;
-  font-weight: 600;
-}
-
-.navbar-actions {
+.navbar-container {
   display: flex;
+  justify-content: space-between; /* Separa extrema izquierda y extrema derecha */
   align-items: center;
-  gap: 24px;
-}
-
-.action-icon-container {
-  position: relative;
-  cursor: pointer;
-}
-
-.icon-alert {
-  font-size: 26px;
-  color: #64748b;
-}
-
-.alert-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background-color: #ef4444; /* Rojo Alerta Crítica */
+  width: 100%;                   /* Obliga al contenedor a usar todo el ancho de la pantalla */
+  background-color: #0f172a;     /* Slate 900 */
   color: #ffffff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 10px;
-  border: 2px solid #ffffff;
+  padding: 12px 24px;
+  height: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-sizing: border-box;        /* Evita desbordamientos con el padding */
 }
 
-.user-profile-box {
+/* SECCIÓN IZQUIERDA: Alineada a la extrema izquierda */
+.navbar-left {
   display: flex;
   align-items: center;
   gap: 12px;
-  border-left: 1px solid #e2e8f0;
-  padding-left: 20px;
+  margin-right: auto;            /* EMPUJA todo lo que esté a su derecha */
+}
+
+.brand-icon {
+  font-size: 24px;
+  background-color: #1e293b;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;              /* Garantiza que el título no herede alineación derecha */
+}
+
+.brand-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.brand-subtitle {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+/* SECCIÓN DERECHA: Alineada a la extrema derecha */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;             /* Refuerza la separación hacia la derecha */
 }
 
 .user-info {
@@ -58,27 +71,44 @@
 }
 
 .user-name {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  color: #1e293b;
+  color: #f8fafc;
 }
 
 .user-role {
-  font-size: 11px;
-  color: #2563eb;
+  font-size: 10px;
+  color: #38bdf8;
   font-weight: 500;
 }
 
 .user-avatar {
-  width: 40px;
-  height: 40px;
-  background-color: #e2e8f0;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
+  background-color: #1e293b;
+  color: #38bdf8;
+  border: 2px solid #38bdf8;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 12px;
   font-weight: 700;
-  color: #475569;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
   font-size: 14px;
-  border: 2px solid #2563eb;
+  transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+  background-color: #1e293b;
+  color: #ef4444;
+  border-color: #ef4444;
 }

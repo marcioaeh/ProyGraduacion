@@ -33,20 +33,26 @@
         <h3>{{ matriz.nombre }} <span style="font-size: 11px; font-weight: normal; color:#94a3b8;">({{matriz.id_origen}})</span></h3>
         <p>{{ matriz.detalles }} &nbsp;|&nbsp; 👤 Responsable: <strong>{{ matriz.encargado }}</strong></p>
       </div>
-      <button (click)="openCreateRiesgo(matriz.id_origen)" class="btn-riesgo-accion">
-        ➕ Identificar Riesgo en esta Matriz
-      </button>
+      
+      <div class="header-acciones-group">
+        <button (click)="toggleMatrixExpansion(matriz.id_origen)" class="btn-toggle-riesgos">
+          {{ isMatrixExpanded(matriz.id_origen) ? '🙈 Ocultar Riesgos' : '👁️ Mostrar Riesgos (' + matriz.lista_riesgos.length + ')' }}
+        </button>
+
+        <button (click)="openCreateRiesgo(matriz.id_origen)" class="btn-riesgo-accion">
+          ➕ Identificar Riesgo
+        </button>
+      </div>
     </div>
 
-    <div class="scroll-tabla">
+    <div class="scroll-tabla" *ngIf="isMatrixExpanded(matriz.id_origen)">
       <table class="tabla-riesgos" *ngIf="matriz.lista_riesgos.length > 0">
         <thead>
           <tr>
-            <th style="width: 30%;">Identificación del Riesgo</th>
+            <th style="width: 35%;">Identificación del Riesgo</th>
             <th>Categoría</th>
-            <th class="text-center">Riesgo Inherente</th>
+            <th class="text-center">Evaluación de Riesgo (1-25)</th>
             <th style="width: 30%;">Medidas de Mitigación / Responsable</th>
-            <th class="text-center">Riesgo Residual</th>
             <th class="text-center">Estado</th>
             <th class="text-center">Acciones</th>
           </tr>
@@ -67,13 +73,7 @@
             </td>
             <td>
               <div style="color: #475569; font-weight: 500;">{{riesgo.medidasMitigacion}}</div>
-              <div class="celda-responsable">👤 {{riesgo.responsable}} (Efectividad: {{riesgo.efectividadControl}}%)</div>
-            </td>
-            <td class="text-center">
-              @let scoreRes = (riesgo.probabilidad * riesgo.impacto) * (1 - riesgo.efectividadControl / 100);
-              <span [ngClass]="getStyleClassForScore(scoreRes)" class="badge-criticidad">
-                {{scoreRes.toFixed(1)}} - {{getLabelForScore(scoreRes)}}
-              </span>
+              <div class="celda-responsable">👤 {{riesgo.responsable}}</div>
             </td>
             <td class="text-center">
               <span [ngClass]="{

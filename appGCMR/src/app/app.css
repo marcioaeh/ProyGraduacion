@@ -1,12 +1,12 @@
 :host {
   display: block;
   height: 100vh;
-  width: 100vw;
+  width: 100%; /* Change 100vw -> 100% to avoid horizontal overflow */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f6f9;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: hidden !important;
 }
 
 /* Contenedor del Login */
@@ -17,12 +17,13 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+  overflow-y: auto; /* Permite scroll solo si la pantalla de login es muy pequeña */
 }
 
 /* Grilla Maestra del Dashboard */
 .dashboard-layout {
   display: flex;
-  width: 100vw;
+  width: 100%; /* Change 100vw -> 100% */
   height: 100vh;
   overflow: hidden;
 }
@@ -34,6 +35,7 @@
   background-color: #111827; /* Gris oscuro corporativo */
   flex-shrink: 0;
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Si el menú tiene muchos ítems, scrollea solo el menú */
 }
 
 /* Contenedor de la derecha (Navbar + Páginas) */
@@ -42,25 +44,28 @@
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
+  min-width: 0; /* Previene desbordamiento en Flexbox cuando hay tablas anchas */
   overflow: hidden;
 }
 
 /* Encabezado Superior */
 .header-navbar {
   height: 70px;
-  background-color: #ffffff;
+  background-color: #0f172a;
   border-bottom: 1px solid #e5e7eb;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   padding: 0 24px;
   justify-content: flex-end;
+  box-sizing: border-box;
 }
 
-/* Área de contenido de páginas internas */
+/* Único contenedor que debe tener scroll para el contenido principal */
 .content-container {
   flex-grow: 1;
   padding: 24px;
-  overflow-y: auto; /* Permite scroll vertical interno si la matriz o lista es grande */
+  overflow-y: auto; /* ÚNICO scrollbar del contenido de tus vistas */
   background-color: #f8fafc;
+  box-sizing: border-box;
 }

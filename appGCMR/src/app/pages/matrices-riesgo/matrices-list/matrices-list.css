@@ -25,9 +25,9 @@
 
 .titulo-principal {
   font-size: 20px;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0 0 4px 0;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 4px 0;
 }
 
 .subtitulo-principal {
@@ -38,7 +38,7 @@
 
 .panel-tabla {
   max-width: 1200px;
-  margin: 0 auto 32px auto;
+  margin: 0 auto;
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
@@ -69,7 +69,7 @@
   background-color: #e2e8f0;
   border-radius: 8px;
   width: 100%;
-  max-width: 320px;
+  max-width: 360px;
 }
 
 .tab-link {
@@ -115,19 +115,21 @@
   box-sizing: border-box;
 }
 
-/* --- Estructura de Tarjeta/Sección por Proyecto o Proceso --- */
-.bloque-matriz {
-  border-bottom: 1px solid #e2e8f0;
-  background: #ffffff;
-}
-
 .matriz-header-row {
   padding: 16px;
   background-color: #f8fafc;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
   border-bottom: 1px solid #f1f5f9;
+}
+
+@media (min-width: 640px) {
+  .matriz-header-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .matriz-meta-info h3 {
@@ -143,6 +145,29 @@
   color: #64748b;
 }
 
+.header-acciones-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-toggle-riesgos {
+  background-color: #ffffff;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-toggle-riesgos:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
 .btn-riesgo-accion {
   background-color: #0f172a;
   color: #ffffff;
@@ -152,13 +177,13 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.15s;
 }
 
 .btn-riesgo-accion:hover {
   background-color: #1e293b;
 }
 
-/* --- Tabla Interna de Riesgos --- */
 .scroll-tabla {
   overflow-x: auto;
 }
@@ -234,6 +259,12 @@
   border-color: #fee2e2;
 }
 
+.criticidad-muy-alto {
+  color: #c2410c;
+  background-color: #fff7ed;
+  border-color: #ffedd5;
+}
+
 .criticidad-alto {
   color: #b45309;
   background-color: #fffbeb;
@@ -250,6 +281,12 @@
   color: #047857;
   background-color: #ecfdf5;
   border-color: #d1fae5;
+}
+
+.criticidad-muy-bajo {
+  color: #475569;
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
 }
 
 .estado-badge {
@@ -286,10 +323,7 @@
   padding: 4px;
   cursor: pointer;
   border-radius: 4px;
-}
-
-.btn-accion:hover {
-  background-color: #f1f5f9;
+  font-size: 14px;
 }
 
 .sin-datos {

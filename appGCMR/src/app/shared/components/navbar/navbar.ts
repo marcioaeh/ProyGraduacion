@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css',
+  styleUrls: ['./navbar.css']
 })
-export class Navbar {}
+export class Navbar {
+  userName = signal<string>('Ing. Marcio Enamorado');
+  userRole = signal<string>('Administrador / Dueño');
+}

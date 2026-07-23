@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important; /* Desactiva el scroll externo de la ventana */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}

@@ -22,7 +22,7 @@ export class MatrizForm implements OnInit {
   impacto = 2;
   medidasMitigacion = '';
   responsable = 'Ingeniero Residente';
-  efectividadControl = 50;
+  
   estado: 'Abierto' | 'Mitigado' | 'Materializado' = 'Abierto';
 
   ngOnInit() {
@@ -35,19 +35,20 @@ export class MatrizForm implements OnInit {
       this.impacto = this.riesgo.impacto;
       this.medidasMitigacion = this.riesgo.medidasMitigacion;
       this.responsable = this.riesgo.responsable;
-      this.efectividadControl = this.riesgo.efectividadControl;
       this.estado = this.riesgo.estado;
     }
   }
 
   get inherentScore(): number { return this.probabilidad * this.impacto; }
-  get residualScore(): number { return Number((this.inherentScore * (1 - this.efectividadControl / 100)).toFixed(2)); }
+  
 
   getLabelForScore(score: number): string {
-    if (score >= 9) return 'Crítico';
-    if (score >= 6) return 'Alto';
-    if (score >= 3) return 'Medio';
-    return 'Bajo';
+    if (score >= 20) return 'Crítico';
+    if (score >= 15) return 'Muy Alto';
+    if (score >= 10) return 'Alto';
+    if (score >= 5) return 'Medio';
+    if (score >= 3) return 'Bajo';
+    return 'Muy Bajo';
   }
 
   submit() {
@@ -66,7 +67,7 @@ export class MatrizForm implements OnInit {
       impacto: Number(this.impacto),
       medidasMitigacion: this.medidasMitigacion,
       responsable: this.responsable,
-      efectividadControl: Number(this.efectividadControl),
+      
       estado: this.estado
     };
 
